@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: mls-data-group-test
+  profiles:
+      active: @mvn.profile.active@
+  transaction:
+    rollback-on-commit-failure: true
+  mvc:
+    servlet:
+      load-on-startup: 1
+  aop:
+    auto: true
+    proxy-target-class: true
+  http:
+    encoding:
+      enabled: true
+      force: true
+      charset: utf-8
+    converters:
+      preferred-json-mapper: jackson
+
+mybatis:
+  type-aliases-package:
+  type-handlers-package: com.lianjia.common.typehandlers.type
+  mapper-locations: classpath:mapper/*.xml
+  check-config-location: false
+  configuration:
+    cache-enabled: false
+    lazy-loading-enabled: false
+    multiple-result-sets-enabled: true
+    use-column-label: true
+    use-generated-keys: true
+    auto-mapping-behavior: partial
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    log-prefix: executableSql.
+    map-underscore-to-camel-case: true
+
+hawk:
+  app-name: mls-data-group-test
+
+redStar:
+  token: 5a4b9095e9aa23e7b24c473bcd098cc1
+  source: 搜索推荐优化FT项目组

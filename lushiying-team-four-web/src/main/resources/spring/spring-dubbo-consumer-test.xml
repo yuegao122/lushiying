@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!--中台CompanyUtil相关-->
+    <dubbo:reference id="companyFacade" interface="com.lianjia.mls.support.api.CompanyFacade"
+                     version="1.0.0" registry="mls_zk" check="false" url="dubbo://10.200.19.176:28650">
+        <!--url="dubbo://10.200.20.131:28650"-->
+        <dubbo:parameter key="app" value="alliance-web"/>
+        <dubbo:parameter key="access_id" value="a3e26e0ef6da765e"/>
+    </dubbo:reference>
+
+    <dubbo:reference id="aggregationFacade" interface="com.lianjia.mls.datakeeper.housedel.facade.AggregationFacade"
+                     check="false" version="1.0.1" registry="mls_zk">
+        <dubbo:parameter key="dkAccessAppKey" value="DATAKEEPER_HOUSEDEL"/>
+        <dubbo:parameter key="dkAccessToken" value="f26QLh8W40888wmgQ15c"/>
+    </dubbo:reference>
+
+    <!--url="dubbo://10.33.108.47:28610"-->
+    <dubbo:reference id="housedelBasicFacade" interface="com.lianjia.mls.delegation.api.rpc.HousedelBasicFacade"
+                     version="1.0.1" check="false" registry="mls_zk" url="dubbo://10.200.19.202:28610"/>
+    <!--UC-->
+    <dubbo:reference id="ehrUserFacade" interface="com.lianjia.uc.api.user.EhrUserFacade" check="false"
+                     registry="jichu_zk" url="dubbo://10.200.20.89:25100"/>
+
+    <dubbo:reference id="jobAssignDetailFacade" interface="com.lianjia.redstar.api.service.JobAssignDetailFacade"
+                     check="false" version="1.0.0" registry="jichu_zk"/>
+
+    <dubbo:reference id="eventHandlerFacade" interface="com.lianjia.redstar.api.service.EventHandlerFacade"
+                     version="1.0.0" registry="jichu_zk" cluster="failfast"/>
+
+</beans>

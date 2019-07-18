@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <dubbo:application name="${spring.dubbo.application.name}" organization="fang-rd" default="true"/>
+
+    <!-- 端口如果被占用需要替换 -->
+    <dubbo:protocol name="${spring.dubbo.protocol.name}" port="${spring.dubbo.protocol.port}"/>
+
+    <dubbo:registry id="mls_zk" protocol="zookeeper" address="${spring.dubbo.registries.mls.address}"
+                    group="${spring.dubbo.registries.mls.group}"
+                    username="${spring.dubbo.registries.mls.username}"
+                    password="${spring.dubbo.registries.mls.password}"
+                    file="${spring.dubbo.registries.mls.file}"
+                    check="false"
+                    default="true"/>
+
+    <dubbo:registry id="jichu_zk" protocol="zookeeper" address="${spring.dubbo.registries.jichu.address}"
+                    group="${spring.dubbo.registries.jichu.group}"
+                    username="${spring.dubbo.registries.jichu.username}"
+                    password="${spring.dubbo.registries.jichu.password}"
+                    file="${spring.dubbo.registries.jichu.file}"
+                    check="false" default="false"/>
+
+    <dubbo:registry id="qianqian_zk" protocol="zookeeper" address="${spring.dubbo.registries.qianqian.address}"
+                    group="${spring.dubbo.registries.qianqian.group}"
+                    username="${spring.dubbo.registries.qianqian.username}"
+                    password="${spring.dubbo.registries.qianqian.password}"
+                    file="${spring.dubbo.registries.qianqian.file}"
+                    check="false" default="false"/>
+
+    <dubbo:registry id="alliance_api_zk" protocol="zookeeper" address="${spring.dubbo.registries.alliance_api.address}"
+                    group="${spring.dubbo.registries.alliance_api.group}"
+                    username="${spring.dubbo.registries.alliance_api.username}"
+                    password="${spring.dubbo.registries.alliance_api.password}"
+                    file="${spring.dubbo.registries.alliance_api.file}"
+                    check="false" default="false"/>
+
+    <!-- consumer -->
+    <dubbo:consumer timeout="${spring.dubbo.consumer.timeout}" retries="${spring.dubbo.consumer.timeout}" check="false"
+                    registry="mls_zk"/>
+
+    <bean class="com.lianjia.mls.support.util.CompanyUtil"/>
+
+    <bean class="com.lianjia.common.util.SpringContextUtils"/>
+
+    <beans profile="dev">
+        <import resource="spring-dubbo-consumer-dev.xml"/>
+    </beans>
+
+    <beans profile="test">
+        <import resource="spring-dubbo-consumer-test.xml"/>
+    </beans>
+
+    <beans profile="preview,prod">
+        <import resource="spring-dubbo-consumer-prod.xml"/>
+    </beans>
+    
+    <!-- provider -->
+    <beans profile="dev,local,test,prod">
+        <import resource="spring-dubbo-provider.xml"/>
+        <dubbo:provider timeout="${spring.dubbo.provider.timeout}"
+                        retries="${spring.dubbo.provider.retries}"
+                        registry="mls_zk"
+                        version="1.0.1"
+                        filter="mlsProviderFilter"/>
+    </beans>
+</beans>

@@ -1,0 +1,113 @@
+server:
+  port: 9650
+
+logging:
+  base: /data0/www/applogs
+  path: ${logging.base}/${spring.application.name}
+
+spring:
+  application:
+    domain: mls-data-group-test
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  datasource:
+    druid:
+      #需要更新值
+      username: acn_rw
+      password: yR0i2bYd6QAOkevj
+      url: jdbc:mysql://m9038.zeus.mysql.ljnode.com:9038/house_intelligent_tools?useUnicode=true&zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      initial-size: 1
+      min-idle: 1
+      max-active: 10
+      query-timeout: 10
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      use-global-data-source-stat: true
+      stat:
+        log-slow-sql: true
+        slow-sql-millis: 1000
+        merge-sql: true
+      slf4j:
+        enabled: true
+        data-source-log-enabled: true
+        connection-log-enabled: false
+        connection-log-error-enabled: true
+        statement-log-enabled: true
+        statement-log-error-enabled: true
+        statement-sql-format-option:
+          upp-case: true
+          pretty-format: false
+        statement-sql-pretty-format: false
+        statement-parameter-set-log-enabled: false
+        statement-prepare-after-log-enabled: false
+        statement-close-after-log-enabled: false
+        statement-executable-sql-log-enable: true
+        result-set-log-enabled: false
+        result-set-log-error-enabled: true
+      wall:
+        enabled: true
+        db-type: mysql
+        log-violation: true
+        throw-exception: false
+        config:
+          delete-where-none-check: true
+          multi-statement-allow: true
+      stat-view-servlet:
+        enabled: true
+
+  dubbo:
+    application:
+      name: ${spring.application.name}
+    registries:
+      mls:
+        address: zk01.matrix.zeus.lianjia.com:2181,zk02.matrix.zeus.lianjia.com:2181,zk03.matrix.zeus.lianjia.com:2181
+        group: /mls/dubbo
+        username: mls
+        password: 5ef39Bd15a
+        file: /data0/www/cache/${spring.application.name}/dubbo/mls_zk
+      jichu:
+        address: zk01.matrix.zeus.lianjia.com:2181,zk02.matrix.zeus.lianjia.com:2181,zk03.matrix.zeus.lianjia.com:2181
+        group: /jichu/dubbo
+        username: jichu
+        password: McBuai6Ken
+        file: /data0/www/cache/${spring.application.name}/dubbo/jichu_zk
+      qianqian:
+        address: zk01.matrix.zeus.lianjia.com:2181,zk02.matrix.zeus.lianjia.com:2181,zk03.matrix.zeus.lianjia.com:2181
+        group: /qianqian/dubbo
+        username: qianqian
+        password: 7c75GY5801K
+        file: /data0/www/cache/${spring.application.name}/dubbo/qianqian_zk
+      alliance_api:
+        address: zk01-test.lianjia.com:2181
+        group: /home2/qianqian/dubbo
+        username: home2
+        password: bab5ff85
+        file: /data0/www/cache/${spring.application.name}/dubbo/alliance_api_zk
+    protocol:
+      name: dubbo
+      port: 9653
+    provider:
+      timeout: 5000
+      retries: 1
+    consumer:
+      timeout: 5000
+      retries: 1
+      qianqian:
+        registry: qianqian_zk
+
+hawk:
+  app-name: ${spring.application.name}
+  server:
+    host: collect.hawk.lianjia.com
+    socket-port: 8101
+  jvm:
+    direct-memory: false
+  dubbo:
+    enabled: true
+
+recommend:
+  domain: http://i.bk-house-api.ke.com

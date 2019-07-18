@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "spring.application.domain",
+      "type": "java.lang.String",
+      "description": "当前应用的域名."
+    },
+    {
+      "name": "mls.auth.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否开启中台 Dubbo 接口的鉴权."
+    },
+    {
+      "name": "mls.auth.list",
+      "type": "java.lang.String",
+      "description": "调用中台的鉴权验证."
+    }
+  ]
+}

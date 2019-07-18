@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.lianjia.mls</groupId>
+        <artifactId>lushiying-team-four</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <name>lushiying-team-four-web</name>
+    <artifactId>lushiying-team-four-web</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.lianjia.usercenter</groupId>
+            <artifactId>uc-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.lianjia.mls</groupId>
+            <artifactId>lushiying-team-four-srv</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.lianjia.mls</groupId>
+            <artifactId>lushiying-team-four-biz</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.lianjia.mls</groupId>
+            <artifactId>lushiying-team-four-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.lianjia.iprd</groupId>
+            <artifactId>http2dubbo</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.lianjia.cs</groupId>
+            <artifactId>dubbo</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.101tec</groupId>
+            <artifactId>zkclient</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jetty</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.eclipse.jetty.websocket</groupId>
+                    <artifactId>javax-websocket-server-impl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.jetty.websocket</groupId>
+                    <artifactId>websocket-server</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.lianjia.mls</groupId>
+            <artifactId>dubbo-provider-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.lianjia.mls</groupId>
+            <artifactId>http-interceptor-spring-boot</artifactId>
+        </dependency>
+
+        <!--hawk config-->
+        <dependency>
+            <groupId>com.lianjia.hawk</groupId>
+            <artifactId>hawk-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.lianjia.hawk</groupId>
+            <artifactId>hawk-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.lianjia.mls</groupId>
+            <artifactId>datakeeper-housedel-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ke.breeze</groupId>
+            <artifactId>breeze-common-fe</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.lianjia.mls</groupId>
+            <artifactId>lushiying-team-four-common</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <env>dev</env>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <env>test</env>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <env>prod</env>
+            </properties>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                        <excludes>
+                            <exclude>**/dubbo/internal/com.alibaba.dubbo.remoting.telnet.TelnetHandler</exclude>
+                        </excludes>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+    </profiles>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>${start-class}</mainClass>
+                    <outputDirectory>target/mls-data-group-test/lib</outputDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-properties</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/lushiying-team-four/conf</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <filtering>true</filtering>
+                                    <includes>
+                                        <include>application.yml</include>
+                                        <include>application*.yaml</include>
+                                        <include>application*.properties</include>
+                                    </includes>
+                                </resource>
+                                <resource>
+                                    <directory>src/main/resources/config</directory>
+                                    <filtering>true</filtering>
+                                    <includes>
+                                        <include>application*.yml</include>
+                                        <include>application*.yaml</include>
+                                        <include>application*.properties</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-bins</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/lushiying-team-four/bin</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources/scripts</directory>
+                                    <includes>
+                                        <include>run.sh</include>
+                                        <include>setenv.sh</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.shared</groupId>
+                        <artifactId>maven-filtering</artifactId>
+                        <version>1.3</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering><!-- 使用 env 值，替换配置文件中 @env@ -->
+            </resource>
+        </resources>
+
+    </build>
+</project>
