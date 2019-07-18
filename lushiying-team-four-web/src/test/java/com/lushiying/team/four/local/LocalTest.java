@@ -3,9 +3,13 @@ package com.lushiying.team.four.local;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Sets;
+import com.lushiying.team.four.BaseTest;
+import com.lushiying.team.four.dao.mapper.SuggestContentMapper;
+import com.lushiying.team.four.model.db.SuggestContent;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 
+import javax.annotation.Resource;
 import java.io.*;
 import java.util.HashSet;
 import java.util.List;
@@ -14,7 +18,19 @@ import java.util.List;
  * @author yuzhibo
  * @date 2019/7/10 17:07
  */
-public class LocalTest {
+public class LocalTest extends BaseTest {
+
+    @Resource
+    private SuggestContentMapper suggestContentMapper;
+
+    @Test
+    public void test11(){
+        SuggestContent suggestContent = new SuggestContent();
+        suggestContent.setAgentId(1111L);
+        suggestContent.setSuggestContent("hello world");
+        suggestContent.setUserId(3334L);
+        suggestContentMapper.insert(suggestContent);
+    }
 
     @Test
     public void test() {

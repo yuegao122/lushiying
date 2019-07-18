@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lushiying.team.four.dao.mapper.SuggestContentMapper">
+    <sql id="SuggestContentFields">
+  		id AS id,
+  		user_id AS userId,
+  		agent_id AS agentId,
+  		suggest_content AS suggestContent,
+  		create_time AS createTime,
+  		update_time AS updateTime
+ 	</sql>
+
+    <sql id="SuggestContentTable">
+        acn_suggest_content
+ 	</sql>
+
+
+    <sql id="where_sql">
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+        </where>
+    </sql>
+
+    <select id="findList" parameterType="com.lushiying.team.four.query.SuggestContentQM"
+            resultType="com.lushiying.team.four.model.db.SuggestContent">
+        select
+        <include refid="SuggestContentFields"/>
+        from
+        <include refid="SuggestContentTable"/>
+
+        <include refid="where_sql"/>
+        <if test="orderByOperation != null">
+            <foreach collection="orderByOperation.itemOperators" item="opr" separator="," open="order by ">
+                ${opr.column} ${opr.operator}
+            </foreach>
+        </if>
+        <if test="page != null">
+            limit #{page.offset},#{page.limit}
+        </if>
+    </select>
+
+    <insert id="insert" parameterType="com.lushiying.team.four.model.db.SuggestContent">
+        insert into
+        <include refid="SuggestContentTable"/>(
+        user_id,
+        agent_id,
+        suggest_content)
+        value(
+        #{userId},
+        #{agentId},
+        #{suggestContent})
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <select id="getById" parameterType="Long" resultType="com.lushiying.team.four.model.db.SuggestContent">
+        select
+        <include refid="SuggestContentFields"/>
+        from
+        <include refid="SuggestContentTable"/>
+        WHERE id = #{id}
+    </select>
+
+
+
+    <update id="update" parameterType="com.lushiying.team.four.model.db.SuggestContent">
+        UPDATE
+        <include refid="SuggestContentTable"/>
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="agentId != null">
+                agent_id = #{agentId},
+            </if>
+            <if test="suggestContent != null">
+                suggest_content = #{suggestContent},
+            </if>
+
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="count" parameterType="com.lushiying.team.four.query.SuggestContentQM" resultType="int">
+        select count(1) from
+        <include refid="SuggestContentTable"/>
+        <include refid="where_sql"/>
+    </select>
+
+</mapper>
